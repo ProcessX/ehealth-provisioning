@@ -7,3 +7,8 @@ variable "resource_group_location" {
   type = string
   description = "RG's location for the project"
 }
+
+variable "environment_list" {
+  type = list(string)
+  description = "Tags for the different environments"
+}
