@@ -94,3 +94,42 @@ resource "azurerm_storage_account" "storage" {
     environment = var.environment_tag
   }
 }
+
+resource "azurerm_linux_virtual_machine" "linuxvm" {
+  count = length(var.machine_list)
+  name = "vm-${var.environment_tag}-${var.machine_list[count.index]}"
+  resource_group_name = var.resource_group_name
+  location = var.resource_group_location
+  network_interface_ids = [azurerm_network_interface.nic[count.index].id]
+  size = "Standard_DS1_v2"
+
+  os_disk {
+    name = "osdisk-${var.environment_tag}-${var.machine_list[count.index]}"
+    caching = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer = "UbuntuServer"
+    sku = "18.04-LTS"
+    version = "latest"
+  }
+
+  computer_name = "vm-${var.environment_tag}-${var.machine_list[count.index]}"
+  admin_username = "azureuser"
+  disable_password_authentication = true
+
+  admin_ssh_key {
+    username = "azureuser"
+    public_key = var.ssh_key
+  }
+
+  boot_diagnostics {
+    storage_account_uri = azurerm_storage_account.storage[count.index].primary_blob_endpoint
+  }
+
+  tags = {
+    environment = var.environment_tag
+  }
+}

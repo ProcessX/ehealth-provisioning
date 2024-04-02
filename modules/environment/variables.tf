@@ -13,3 +13,7 @@ variable "resource_group_location" {
 variable "environment_tag" {
   type = string
 }
+
+variable "ssh_key" {
+  type = string
+}
