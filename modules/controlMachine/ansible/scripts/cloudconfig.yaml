@@ -1,0 +1,7 @@
+#cloud-config
+package_upgrade: false
+packages:
+  - httpd
+runcmd:
+  - sudo apt-get update -y
+  - sudo apt-get install ansible -y

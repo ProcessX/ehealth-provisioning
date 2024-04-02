@@ -89,7 +89,7 @@ resource "azurerm_storage_account" "storage" {
 }
 
 data "template_file" "cloudconfig" {
-  template = "${file("./ansible/scripts/userdata.yaml")}"
+  template = "./ansible/scripts/userdata.yaml"
 }
 
 data "template_cloudinit_config" "config" {
@@ -134,6 +134,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.storage.primary_blob_endpoint
   }
+
+  custom_data = data.template_cloudinit_config.config.rendered
 
   tags = {
     environment = "production"
