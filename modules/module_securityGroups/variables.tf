@@ -1,4 +1,4 @@
-variable "public_ip_names" {
+variable "machine_list" {
   type = list(string)
 }
 
@@ -12,4 +12,8 @@ variable "resource_group_location" {
 
 variable "environment_tag" {
   type = string
+}
+
+variable "subnet_ids" {
+  type = list(string)
 }
