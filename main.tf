@@ -28,3 +28,8 @@ module "controlMachine" {
   ssh_key = tls_private_key.ssh_key.public_key_openssh
   depends_on = [ azurerm_resource_group.rg-ehealth, tls_private_key.ssh_key ]
 }
+
+module "ansible" {
+  source = "./modules/ansible"
+  depends_on = [ module.controlMachine, module.environment ]
+}

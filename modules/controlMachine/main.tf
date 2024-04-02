@@ -88,6 +88,20 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
+data "template_file" "cloudconfig" {
+  template = "${file("./ansible/scripts/userdata.yaml")}"
+}
+
+data "template_cloudinit_config" "config" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    content_type = "text/cloud-config"
+    content      = "${data.template_file.cloudconfig.rendered}"
+  }
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
   name = "vm-control-machine"
   resource_group_name = var.resource_group_name
