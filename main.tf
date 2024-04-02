@@ -26,3 +26,13 @@ module "module_securityGroups" {
   environment_tag = var.environment_list[count.index]
   depends_on = [ azurerm_resource_group.rg-ehealth ]
 }
+
+module "module_storages" {
+  count = length(var.environment_list)
+  source = "./modules/module_storages"
+  resource_group_name = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  environment_tag = var.environment_list[count.index]
+  machine_list = var.machine_list
+  depends_on = [ azurerm_resource_group.rg-ehealth ]
+}
