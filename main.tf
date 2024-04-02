@@ -20,3 +20,11 @@ module "environment" {
   ssh_key = tls_private_key.ssh_key.public_key_openssh
   depends_on = [ azurerm_resource_group.rg-ehealth, tls_private_key.ssh_key ]
 }
+
+module "controlMachine" {
+  source = "./modules/controlMachine"
+  resource_group_name = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  ssh_key = tls_private_key.ssh_key.public_key_openssh
+  depends_on = [ azurerm_resource_group.rg-ehealth, tls_private_key.ssh_key ]
+}
